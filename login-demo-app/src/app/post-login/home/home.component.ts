@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PublicIpHttpService } from '../services/public-ip-http.service';
 
 @Component({
   selector: 'app-home',
@@ -6,10 +7,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
-  constructor() { }
+  publicIp: string;
+  constructor(private publicIpHttpService: PublicIpHttpService) { }
 
   ngOnInit() {
+    this.getIP();
+  }
+
+  getIP() {
+    this.publicIpHttpService.getPublicIp().subscribe((data) => {
+      this.publicIp = data['ip'];
+    });
   }
 
 }
