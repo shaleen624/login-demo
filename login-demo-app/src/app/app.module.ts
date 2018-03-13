@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-
+import { LocalStorageModule } from 'angular-2-local-storage';
 
 import { AppComponent } from './app.component';
 import { PreLoginModule } from './pre-login/pre-login.module';
@@ -33,7 +33,11 @@ export const appRoutes: Routes = [
     RouterModule.forRoot(
       appRoutes
     ),
-    PreLoginModule,
+    LocalStorageModule.withConfig({
+      prefix: 'my-app',
+      storageType: 'localStorage'
+    }),
+    PreLoginModule
   ],
   providers: [
     {

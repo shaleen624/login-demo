@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PublicIpHttpService } from '../services/public-ip-http.service';
+import { LocalStorageService } from 'angular-2-local-storage';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -8,9 +10,14 @@ import { PublicIpHttpService } from '../services/public-ip-http.service';
 })
 export class HomeComponent implements OnInit {
   publicIp: string;
-  constructor(private publicIpHttpService: PublicIpHttpService) { }
+  userName: string;
+  constructor(
+    private publicIpHttpService: PublicIpHttpService,
+    private localStorageService: LocalStorageService,
+    private router: Router) { }
 
   ngOnInit() {
+    this.userName = this.localStorageService.get('name');
     this.getIP();
   }
 
@@ -18,6 +25,11 @@ export class HomeComponent implements OnInit {
     this.publicIpHttpService.getPublicIp().subscribe((data) => {
       this.publicIp = data['ip'];
     });
+  }
+
+  logout () {
+    this.localStorageService.clearAll();
+    this.router.navigate(['/', 'login']);
   }
 
 }

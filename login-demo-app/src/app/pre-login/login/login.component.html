@@ -8,13 +8,16 @@
         </div>
         <br>
         <div class="panel-body">
-          <form accept-charset="UTF-8" role="form">
+          <form accept-charset="UTF-8" (ngSubmit)="submitForm()" [formGroup]="loginForm" role="form">
             <fieldset>
               <div class="form-group">
-                <input class="form-control" placeholder="E-mail" name="email" type="text">
+                <input class="form-control" formControlName="userName" placeholder="E-mail" name="email" type="text">
               </div>
+              <!-- <div *ngIf="userName.errors?.pattern">
+                  User name not valid.
+             </div> -->
               <div class="form-group">
-                <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                <input class="form-control" formControlName="password" placeholder="Password" name="password" type="password" value="">
               </div>
               <!-- <div class="checkbox">
                 <label>
@@ -30,3 +33,6 @@
     </div>
   </div>
 </div>
+
+<p>Form value: {{ loginForm.value | json }}</p>
+<p>Form status: {{ loginForm.status | json }}</p>
