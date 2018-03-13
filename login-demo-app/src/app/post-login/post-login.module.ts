@@ -2,9 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home/home.component';
 import { RouterModule, Routes } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { PublicIpHttpService } from './services/public-ip-http.service';
+import { AppInterceptorService } from '../services/app-interceptor.service';
 
 const ROUTES: Routes = [
   {
@@ -21,6 +22,11 @@ const ROUTES: Routes = [
   ],
   declarations: [HomeComponent],
   providers: [
-    PublicIpHttpService]
+    PublicIpHttpService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AppInterceptorService,
+      multi: true,
+    }]
 })
 export class PostLoginModule { }
