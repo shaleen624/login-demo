@@ -11,6 +11,9 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
   publicIp: string;
   userName: string;
+  modalTarget = '';
+  modalMsg: string;
+  modalType = 'confirm';
   constructor(
     private publicIpHttpService: PublicIpHttpService,
     private localStorageService: LocalStorageService,
@@ -25,6 +28,12 @@ export class HomeComponent implements OnInit {
     this.publicIpHttpService.getPublicIp().subscribe((data) => {
       this.publicIp = data['ip'];
     });
+  }
+
+  onLogoutClick () {
+    this.modalMsg = 'Are you sure you want to log out?';
+    this.modalTarget = '#msgMdl';
+    this.modalType = 'confirm';
   }
 
   logout () {

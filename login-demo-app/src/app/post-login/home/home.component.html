@@ -4,4 +4,31 @@
     </h1>
     <br>
 <h3>Your IP is {{publicIp}}</h3>
+<br><br>
+<button class="btn btn-primary" data-toggle="modal" (click)="onLogoutClick()" [attr.data-target]="modalTarget">Logout</button>
 </div>
+
+<!-- modal  -->
+<div class="modal" id="msgMdl" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Alert</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>{{modalMsg}}</p>
+        </div>
+        <div *ngIf="modalType==='confirm'" class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="logout()"  data-dismiss="modal">Ok</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+        <div *ngIf="modalType==='alert'" class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+            
+          </div>
+      </div>
+    </div>
+  </div>
