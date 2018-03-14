@@ -9,11 +9,11 @@
   <h3 *ngIf="publicIp">Your IP is {{publicIp}}</h3>
   <br>
   <br>
-  <button class="btn btn-primary" data-toggle="modal" (click)="onLogoutClick()" [attr.data-target]="modalTarget">Logout</button>
+  <button class="btn btn-primary" data-toggle="modal" (click)="setModalAttributes(constants.LOGOUT_MSG, constants.MODAL_TYPE_CNFRM)" [attr.data-target]="constants.HOME_POPUP_ID">Logout</button>
 </div>
 
 <!-- modal  -->
-<div class="modal" id="msgMdl" tabindex="-1" role="dialog">
+<div class="modal" id="homePopup" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -30,7 +30,7 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
       </div>
       <div *ngIf="modalType==='alert'" class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+        <button type="button" (click)="resetIdleTimer()" class="btn btn-primary" data-dismiss="modal">Ok</button>
 
       </div>
     </div>

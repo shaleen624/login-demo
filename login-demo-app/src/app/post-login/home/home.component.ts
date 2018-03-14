@@ -3,85 +3,91 @@ import { PublicIpHttpService } from '../services/public-ip-http.service';
 import { LocalStorageService } from 'angular-2-local-storage';
 import { Router } from '@angular/router';
 import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
-
+import { appConstants } from '../../utilities/appConstants';
+declare var $: any;
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+
   publicIp: string;
   loginId: string;
-  modalTarget = '';
+  constants = appConstants;
   modalMsg: string;
-  modalType = 'confirm';
-  //
-  idleState = 'Not started.';
-  timedOut = false;
+  modalType: string;
+
   constructor(
     private publicIpHttpService: PublicIpHttpService,
     private localStorageService: LocalStorageService,
     private router: Router,
-    private idle: Idle) {
-    // sets an idle timeout of 5 seconds, for testing purposes.
-    idle.setIdle(5);
-    // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
-    idle.setTimeout(5);
-    // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
-    idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
+    private idle: Idle) { }
 
-    idle.onIdleEnd.subscribe(() => this.idleState = 'No longer idle.');
-    idle.onTimeout.subscribe(() => {
-      this.idleState = 'Timed out!';
-      this.timedOut = true;
-      alert('timed out');
-     this.showModal('timed out', '#msgMdl', 'alert');
-    });
-    idle.onIdleStart.subscribe(() => this.idleState = 'You\'ve gone idle!');
-    idle.onTimeoutWarning.subscribe((countdown) => {
-      this.showModal('You will time out in ' + countdown + ' seconds!', '#msgMdl', 'alert');
-      this.idleState = 'You will time out in ' + countdown + ' seconds!';
-       alert(this.idleState);
-    });
-    this.reset();
-  }
-
-
+  /**
+   * Init lifecycle hook.
+   */
   ngOnInit() {
-    this.loginId = this.localStorageService.get('loginId');
-    // this.getIP();
+    this.loginId = this.localStorageService.get(appConstants.USERNAME_KEY);
+    this.checkForIdle();
   }
-
-  reset() {
-    this.idle.watch();
-    this.idleState = 'Started.';
-    this.timedOut = false;
-  }
-
+  /**
+   * Function to call the http service to retrieve
+   * the public IP of the system.
+   */
   getIP() {
     this.publicIpHttpService.getPublicIp().subscribe((data) => {
       this.publicIp = data['ip'];
     });
   }
-
-  onLogoutClick() {
-    // this.modalMsg = 'Are you sure you want to log out?';
-    // this.modalTarget = '#msgMdl';
-    // this.modalType = 'confirm';
-    this.showModal('Are you sure you want to log out?', '#msgMdl', 'confirm');
-  }
-
-  showModal (msg, target, type) {
-    this.modalTarget = '';
+  /**
+   * Function to set the message and type of modal.
+   *  @param {string} msg
+   *  @param {string} type
+   */
+  setModalAttributes(msg, type) {
     this.modalMsg = msg;
-    this.modalTarget = target;
     this.modalType = type;
-    // alert(this.idleState);
   }
-
+  /**
+   * Function called on click of 'Logout'.
+   */
   logout() {
     this.localStorageService.clearAll();
-    this.router.navigate(['/', 'login']);
+    this.router.navigate(['login']);
+  }
+  /**
+   * Function to reset the idle timer.
+   */
+  resetIdleTimer() {
+    this.idle.watch();
+  }
+  /**
+   * Function to manage the idle state of page.
+   */
+  checkForIdle() {
+    // sets an idle timeout of 60 seconds.
+    this.idle.setIdle(appConstants.IDLE_WARNING_TIME);
+    // sets a timeout period of '30' seconds. after '90' seconds of inactivity,
+    // the user will be considered timed out.
+    this.idle.setTimeout(appConstants.IDLE_LOGOUT_TIME);
+    // sets the default interrupts, in this case, things like clicks, scrolls,
+    // touches to the document.
+    this.idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
+    // Time out complete event subscriber.
+    this.idle.onTimeout.subscribe(() => {
+      $('#' + appConstants.HOME_POPUP_ID).modal('hide');
+      this.logout();
+    });
+    // Timeout warning event subscriber.
+    this.idle.onTimeoutWarning.subscribe((countdown) => {
+      if (countdown === 5) {
+        // Showing the warning popup when 30 sec are left for timeout.
+        this.setModalAttributes(appConstants.IDLE_MSG, appConstants.MODAL_TYPE_ALERT);
+        $('#' + appConstants.HOME_POPUP_ID).modal('show');
+      }
+    });
+    this.resetIdleTimer();
   }
 
 }
