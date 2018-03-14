@@ -15,7 +15,9 @@ export class LoginComponent implements OnInit {
   emailPattern = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$';
   mobileNumber = '[0-9]*';
   // passPattern = '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,20}';
-  passPattern = "(?=^.{6,10}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\s).*$";
+  // tslint:disable-next-line:quotemark
+   passPattern = "(?=^.{6,20}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\s).*$";
+  // passPattern = '^(?=\P{Ll}*\p{Ll})(?=\P{Lu}*\p{Lu})(?=\P{N}*\p{N})(?=[\p{L}\p{N}]*[^\p{L}\p{N}])[\s\S]{8,}$';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,10 +33,11 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       userName: ['', [Validators.required,
       Validators.pattern(this.mobileNumber)]],
+
       password: ['', [
         Validators.required,
         Validators.minLength(8),
-        Validators.pattern(this.mobileNumber)]]
+        Validators.pattern(this.passPattern)]]
     });
   }
 

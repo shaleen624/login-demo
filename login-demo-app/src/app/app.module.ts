@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LocalStorageModule } from 'angular-2-local-storage';
+import {NgIdleModule} from '@ng-idle/core';
 
 import { AppComponent } from './app.component';
 import { PreLoginModule } from './pre-login/pre-login.module';
@@ -37,6 +38,7 @@ export const appRoutes: Routes = [
       prefix: 'my-app',
       storageType: 'localStorage'
     }),
+    NgIdleModule.forRoot(),
     PreLoginModule
   ],
   providers: [
