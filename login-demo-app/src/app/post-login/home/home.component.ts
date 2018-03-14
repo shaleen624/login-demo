@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
   publicIp: string;
-  userName: string;
+  loginId: string;
   modalTarget = '';
   modalMsg: string;
   modalType = 'confirm';
@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    this.userName = this.localStorageService.get('name');
+    this.loginId = this.localStorageService.get('loginId');
     this.getIP();
   }
 
