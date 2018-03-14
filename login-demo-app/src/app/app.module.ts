@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { PreLoginModule } from './pre-login/pre-login.module';
 import { LoginComponent } from './pre-login/login/login.component';
 import { AppInterceptorService } from './services/app-interceptor.service';
+import { CommonService } from './services/common.service';
 
 export const appRoutes: Routes = [
   {
@@ -46,7 +47,8 @@ export const appRoutes: Routes = [
       provide: HTTP_INTERCEPTORS,
       useClass: AppInterceptorService,
       multi: true,
-    }
+    },
+    CommonService
   ],
   bootstrap: [AppComponent]
 })
