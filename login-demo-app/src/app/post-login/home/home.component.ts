@@ -54,6 +54,7 @@ export class HomeComponent implements OnInit {
    */
   logout() {
     this.localStorageService.clearAll();
+    this.idle.ngOnDestroy(); // includes this.idle.stop() and this.clearInterrupts() both.
     this.router.navigate(['login']);
   }
   /**
@@ -81,7 +82,7 @@ export class HomeComponent implements OnInit {
     });
     // Timeout warning event subscriber.
     this.idle.onTimeoutWarning.subscribe((countdown) => {
-      if (countdown === 5) {
+      if (countdown === appConstants.IDLE_LOGOUT_TIME) {
         // Showing the warning popup when 30 sec are left for timeout.
         this.setModalAttributes(appConstants.IDLE_MSG, appConstants.MODAL_TYPE_ALERT);
         $('#' + appConstants.HOME_POPUP_ID).modal('show');

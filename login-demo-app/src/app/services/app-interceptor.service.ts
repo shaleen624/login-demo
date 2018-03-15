@@ -13,7 +13,10 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/finally';
 import { CommonService } from './common.service';
-
+/**
+ * Class that intecepts every http call and can be used to
+ * update the request and response after every http call.
+ */
 @Injectable()
 export class AppInterceptorService implements HttpInterceptor {
 
