@@ -7,6 +7,7 @@ export const appConstants = {
     MODAL_TYPE_CNFRM: 'confirm',
     MODAL_TYPE_ALERT: 'alert',
     USERNAME_KEY: 'userName',
+    STATUS_INVALID: 'INVALID',
     IDLE_WARNING_TIME: 60,
     IDLE_LOGOUT_TIME: 30
 };

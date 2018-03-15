@@ -37,7 +37,7 @@
     </div>
   </div>
 </div>
-<div style="text-align: center" ngIf='showFormStatus'>
+<div style="text-align: center" *ngIf='showFormStatus'>
 <p>Form value: {{ loginForm?.value | json }}</p>
 <p>Form status: {{ loginForm?.status | json }}</p>
 <p>Username Status: {{this.loginForm.get('loginId').status | json}}</p>

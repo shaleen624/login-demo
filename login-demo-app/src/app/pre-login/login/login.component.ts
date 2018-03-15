@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit {
    */
   checkLoginId () {
     this.showIdError = false;
-    if (this.loginId.status === 'INVALID') {
+    if (this.loginId.status === appConstants.STATUS_INVALID) {
       this.showIdError = true;
     }
   }
@@ -74,7 +74,7 @@ export class LoginComponent implements OnInit {
    */
   checkForPassword () {
     this.showPassError = false;
-    if (this.password.status === 'INVALID') {
+    if (this.password.status === appConstants.STATUS_INVALID) {
       this.showPassError = true;
     }
   }
@@ -83,9 +83,8 @@ export class LoginComponent implements OnInit {
    */
   submitForm () {
     if (!this.loginForm.invalid) {
-    console.log('submitted with', this.loginId.value);
     this.localStorageService.set(appConstants.USERNAME_KEY, this.loginId.value);
-    this.router.navigate(['/', 'home']);
+    this.router.navigate(['home']);
     }
   }
 
