@@ -11,6 +11,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import 'rxjs/add/operator/finally';
 import { CommonService } from './common.service';
 
 @Injectable()
@@ -21,27 +22,28 @@ export class AppInterceptorService implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     console.log('processing request', request);
+    // For showing loading. . . when a request starts.
     this.commonService.loading = true;
-    // const customReq = request.clone({
-    //   // headers: request.headers.set('app-language', 'it')
-    // });
 
     return next
       .handle(request)
       .do((ev: HttpEvent<any>) => {
         if (ev instanceof HttpResponse) {
           console.log('processing response', ev);
-          setTimeout(() => {
-            this.commonService.loading = false;
-          }, 2000);
         }
       })
       .catch(response => {
         if (response instanceof HttpErrorResponse) {
           console.log('Processing http error', response);
         }
-
         return Observable.throw(response);
+      })
+      .finally(() => {
+        console.log('Finally.. hiding the loading message.');
+        // Adding a delay of 2 sec to make the loading message visible.
+        setTimeout(() => {
+          this.commonService.loading = false;
+        }, 2000);
       });
   }
 
