@@ -11,7 +11,7 @@
           <form accept-charset="UTF-8" (ngSubmit)="submitForm()" [formGroup]="loginForm" role="form">
             <fieldset>
               <div class="form-group">
-                <input class="form-control" formControlName="userName" placeholder="E-mail" name="email" type="text">
+                <input class="form-control" formControlName="loginId" placeholder="E-mail / Mobile number" (blur)="validateLoginId()" name="email" type="text">
               </div>
               <!-- <div *ngIf="userName.errors?.pattern">
                   User name not valid.
@@ -20,7 +20,7 @@
                 <input class="form-control" (blur)="checkForPassword()" formControlName="password" placeholder="Password" name="password" type="password" value="">
               </div>
               <div *ngIf="showPassError && password.dirty">
-                <p>
+                <p class="errorText">
                   Password must contain 1 uppercase, 1 lowercase, 1 number, 1 special character and 8-20 characters. 
                 </p>
              </div>
@@ -39,7 +39,7 @@
   </div>
 </div>
 
-<p>Form value: {{ loginForm.value | json }}</p>
-<p>Form status: {{ loginForm.status | json }}</p>
-<p>Username Status: {{this.loginForm.get('userName').status | json}}</p>
+<p>Form value: {{ loginForm?.value | json }}</p>
+<p>Form status: {{ loginForm?.status | json }}</p>
+<p>Username Status: {{this.loginForm.get('loginId').status | json}}</p>
 <p>Password Status: {{this.loginForm.get('password').status | json}}</p>
