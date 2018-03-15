@@ -10,6 +10,7 @@ import { PreLoginModule } from './pre-login/pre-login.module';
 import { LoginComponent } from './pre-login/login/login.component';
 import { AppInterceptorService } from './services/app-interceptor.service';
 import { CommonService } from './services/common.service';
+import { CanActivateRouteGuard } from './utilities/can-activate-route.guard';
 
 export const appRoutes: Routes = [
   {
@@ -18,7 +19,7 @@ export const appRoutes: Routes = [
   }, {
     path: 'home',
     loadChildren: './post-login/post-login.module#PostLoginModule',
-    // data: { title: 'Home' }
+    canActivate: [CanActivateRouteGuard]
   }, {
     path: '',
     redirectTo: '/login',
@@ -48,7 +49,8 @@ export const appRoutes: Routes = [
       useClass: AppInterceptorService,
       multi: true,
     },
-    CommonService
+    CommonService,
+    CanActivateRouteGuard
   ],
   bootstrap: [AppComponent]
 })
