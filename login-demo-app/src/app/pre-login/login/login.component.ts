@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/fo
 import { LocalStorageService } from 'angular-2-local-storage';
 import { Router } from '@angular/router';
 import { appConstants } from '../../utilities/appConstants';
+import { loginIdValidator } from '../utilities/custom-validators';
+
 
 @Component({
   selector: 'app-login',
@@ -12,25 +14,31 @@ import { appConstants } from '../../utilities/appConstants';
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
+  constants = appConstants;
   showPassError = false;
-  emailPattern = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$';
-  mobileNumber = '[0-9]*';
-  // passPattern = '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,20}';
-   passPattern = /(?=^.{8,20}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\s).*$/;
+  showIdError = false;
+  passPattern = /(?=^.{8,20}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\s).*$/;
+  // Set this to true to see the form and fiels status.
+  showFormStatus = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private localStorageService: LocalStorageService,
     private router: Router
   ) { }
-
+  /**
+   * Init lifecycle hook.
+   */
   ngOnInit() {
     this.createForm();
   }
-
+  /**
+   * Init lifecycle hook.
+   */
   createForm() {
     this.loginForm = this.formBuilder.group({
-      loginId: ['', [Validators.required]],
+      loginId: ['', [Validators.required,
+        loginIdValidator]],
 
       password: ['', [
         Validators.required,
@@ -40,35 +48,39 @@ export class LoginComponent implements OnInit {
       ]]
     });
   }
-
+  /**
+   * Getter for login id form control field.
+   */
   get loginId(): AbstractControl {
     return this.loginForm.get('loginId');
   }
-
+  /**
+   * Getter for password form control field.
+   */
   get password(): AbstractControl {
     return this.loginForm.get('password');
   }
-
-  validateLoginId () {
-    console.log(this.loginId);
-    let regex: any;
-    // If only numbers are entered, consider as mobile number
-    if (/^\d+$/.test(this.loginId.value)) {
-      regex = /^\d+$/;
-    // If alphabets are entered or string has @, treat it as email.
-    } else if (this.loginId.value.indexOf('@') > 0 || /[a-zA-Z]/.test(this.loginId.value)) {
-      regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  /**
+   * Function to show error message for 'Login id' on blur.
+   */
+  checkLoginId () {
+    this.showIdError = false;
+    if (this.loginId.status === 'INVALID') {
+      this.showIdError = true;
     }
-    console.log(regex.test(this.loginId.value));
   }
-
+  /**
+   * Function to show error message for 'password' on blur.
+   */
   checkForPassword () {
     this.showPassError = false;
     if (this.password.status === 'INVALID') {
       this.showPassError = true;
     }
   }
-
+  /**
+   * Function called on click of 'Login'.
+   */
   submitForm () {
     if (!this.loginForm.invalid) {
     console.log('submitted with', this.loginId.value);

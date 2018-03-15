@@ -11,24 +11,23 @@
           <form accept-charset="UTF-8" (ngSubmit)="submitForm()" [formGroup]="loginForm" role="form">
             <fieldset>
               <div class="form-group">
-                <input class="form-control" formControlName="loginId" placeholder="E-mail / Mobile number" (blur)="validateLoginId()" name="email" type="text">
+                <input class="form-control" (blur)="checkLoginId()" formControlName="loginId" placeholder="E-mail / Mobile number" name="email"
+                  type="text">
               </div>
-              <!-- <div *ngIf="userName.errors?.pattern">
-                  User name not valid.
-             </div> -->
+              <div *ngIf="showIdError && loginId.dirty">
+                <p class="errorText">
+                  {{constants.INVALID_ID_MSG}}
+                </p>
+              </div>
               <div class="form-group">
-                <input class="form-control" (blur)="checkForPassword()" formControlName="password" placeholder="Password" name="password" type="password" value="">
+                <input class="form-control" (blur)="checkForPassword()" formControlName="password" placeholder="Password" name="password"
+                  type="password" value="">
               </div>
               <div *ngIf="showPassError && password.dirty">
                 <p class="errorText">
-                  Password must contain 1 uppercase, 1 lowercase, 1 number, 1 special character and 8-20 characters. 
+                    {{constants.INVALID_PASS_MSG}}
                 </p>
-             </div>
-              <!-- <div class="checkbox">
-                <label>
-                  <input name="remember" type="checkbox" value="Remember Me"> Remember Me
-                </label>
-              </div> -->
+              </div>
               <br>
               <input class="btn btn-lg btn-success btn-block" type="submit" [disabled]="loginForm.invalid" value="Login">
             </fieldset>
@@ -38,8 +37,9 @@
     </div>
   </div>
 </div>
-
+<div style="text-align: center" ngIf='showFormStatus'>
 <p>Form value: {{ loginForm?.value | json }}</p>
 <p>Form status: {{ loginForm?.status | json }}</p>
 <p>Username Status: {{this.loginForm.get('loginId').status | json}}</p>
 <p>Password Status: {{this.loginForm.get('password').status | json}}</p>
+</div>
