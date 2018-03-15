@@ -70,9 +70,11 @@ export class LoginComponent implements OnInit {
   }
 
   submitForm () {
+    if (!this.loginForm.invalid) {
     console.log('submitted with', this.loginId.value);
     this.localStorageService.set(appConstants.USERNAME_KEY, this.loginId.value);
     this.router.navigate(['/', 'home']);
+    }
   }
 
 
