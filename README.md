@@ -2,7 +2,7 @@
 
 The project is build using Angular version 4 and has following features and implementations.
 
-## Reactive form, lazy loading, custom validator, interceptor, route guard, log out on page idle, a custom loaing text for HTTP calls.
+## Reactive form, lazy loading, custom validator, interceptor, route guard, log out on page idle, a custom loading text for HTTP calls.
 
 ## 1. A lazy and an eagrly loaded module.
    Project has 2 module - pre login and post login, post login module should is lazily loaded after login request
